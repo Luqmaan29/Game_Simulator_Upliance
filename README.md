@@ -31,10 +31,10 @@ The project focuses on **correctness, clean state modeling, and clear separation
 
 ```mermaid
 flowchart TD
-    U[User\n(Text Input)]
-    A[Gemini Agent\n(AI Referee)]
-    T[play_turn Tool\n(Deterministic Logic)]
-    S[GameState\n(State Model)]
+    U["User\n(Text Input)"]
+    A["Gemini Agent\n(AI Referee)"]
+    T["play_turn Tool\n(Deterministic Logic)"]
+    S["GameState\n(State Model)"]
 
     U -->|User Move| A
     A -->|Function Call| T
