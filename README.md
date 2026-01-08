@@ -141,3 +141,13 @@ User Input → LLM (Intent Understanding)
 
 ![Snapshot 2](pic_2.png)
 
+## How to Run
+
+1. Install dependencies:
+   pip install google-genai python-dotenv
+
+2. Set your API key:
+   export GOOGLE_API_KEY=your_api_key_here
+
+3. Run the game:
+   python3 rps_referee.py
