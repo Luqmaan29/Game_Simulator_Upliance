@@ -1,58 +1,80 @@
-# AI Referee for Rock-Paper-Scissors-Plus
+# 🎮 Rock-Paper-Scissors-Plus (RPS+)
 
-A minimal, stateful AI Referee that manages a "Rock-Paper-Scissors-Plus" game using the Google GenAI SDK.
+A modern twist on the classic game, featuring an AI Referee and an explosive "Bomb" mechanic. Play against a bot in a best-of-3 showdown.
 
-## Features
-- **Strict Rules Enforcement**: Validates moves (rock, paper, scissors) and the special "Bomb" rule (once per game).
-- **State Persistence**: Tracks scores, round counts, and bomb usage across turns using a dedicated `GameState` class.
-- **Robust Error Handling**: Invalid moves or bomb re-use "waste" the round (User loses the round), ensuring the game progresses.
-- **Agentic Design**: Separation of concerns between:
-    - **Intent Understanding** (LLM)
-    - **Game Logic** (Deterministic Python Tool)
-    - **Response Generation** (LLM Referee Persona)
+## ✨ Features
+- **Classic Rules**: Rock beats Scissors, Scissors beats Paper, Paper beats Rock.
+- **The Bomb**: A special move that beats everything but can only be used **once** per game.
+- **Two Ways to Play**:
+    - **CLI Mode**: An Agentic AI Referee powered by **Google Gemini** orchestrates the game.
+    - **Web Mode**: A fast, interactive UI built with **Streamlit**.
 
-## Architecture
+## 🏗️ Architecture
 
-The application defines a clear boundary between the LLM and the Game Engine.
+The project supports two distinct architectural patterns for the game logic.
 
-1.  **User Input**: The user chats with the AI Referee.
-2.  **Intent**: The AI identifies the move (e.g., "I choose rock") and calls the `play_turn` tool.
-3.  **Engine**: The `GameState` class:
-    - Validates the move.
-    - Resolves the round (Win/Loss/Draw/Wasted).
-    - Updates scores and round counters.
-    - Returns a structured JSON result.
-4.  **Response**: The AI interprets the JSON result and narrates the outcome (e.g., "You played Rock, I played Scissors. You win this round!").
+```mermaid
+graph TD
+    subgraph CLI_Mode [Terminal Verification]
+        U1[User] -->|Input| S[rps_referee.py]
+        S -->|Game Context| G[Google Gemini API]
+        G -->|Tool Call / Response| S
+        S -->|Result| U1
+    end
 
-## State Model
+    subgraph Web_Mode [Streamlit Application]
+        U2[User] -->|Click| UI[Streamlit UI]
+        UI -->|Event| L[Local Python Logic]
+        L -->|Update State| UI
+        UI -->|Render| U2
+    end
+```
 
-The state is managed in-memory via the `GameState` class:
-
-- `round_count`: 0-3 (Game ends at 3).
-- `scores`: User vs Bot.
-- `bomb_used`: Boolean flags to enforce the "once per game" constraint.
-- `history`: Log of moves (extensible for future analytics).
-
-## Setup & Usage
+## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.9+
-- `google-genai` SDK
-- A valid `GOOGLE_API_KEY`
+- Python 3.8+
+- A [Google Gemini API Key](https://aistudio.google.com/app/apikey) (for CLI mode)
 
 ### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Luqmaan29/Game_Simulator_Upliance.git
+   cd Game_Simulator_Upliance
+   ```
+
+2. **Set up Environment**
+   Create a `.env` file in the root directory:
+   ```bash
+   GOOGLE_API_KEY=your_api_key_here
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   pip install google-genai python-dotenv streamlit
+   ```
+
+## 🕹️ How to Play
+
+### Option 1: AI Referee (CLI)
+Experience the game with an AI personality managing the rules.
 ```bash
-pip install google-genai
-export GOOGLE_API_KEY="your_api_key_here"
+python3 rps_referee.py
 ```
 
-### Running the Game
+### Option 2: Web Interface (Streamlit)
+Play with a graphical interface.
 ```bash
-python rps_referee.py
+streamlit run app.py
 ```
 
-## Trade-offs & Future Improvements (What I'd do with more time)
+## 📜 Rules
+1. **Best of 3 Rounds**.
+2. **Bomb Mechanic**: 
+   - Beats Rock, Paper, and Scissors.
+   - Using it twice wastes your turn (automatic loss for that round).
+   - If both players use Bomb, it's a Draw.
 
-- **Input Handling**: Currently, the logic for "wasting" a round is strict. A more forgiving UX might warn the user once before penalizing.
-- **Persistence**: State is currently in-memory (RAM). For a production app, I would use a lightweight DB (SQLite/Redis) keyed by `session_id` to support concurrent users.
-- **Tooling**: The current loop inspects tool calls manually for maximum control. With more time, I would leverage the SDK's automatic function calling features more deeply if they support local execution contexts seamlessly.
+---
+*Built for the Upliance Game Simulator Project.*
