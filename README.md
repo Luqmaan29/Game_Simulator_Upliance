@@ -180,22 +180,11 @@ The game runs in a **simple conversational CLI loop**, as required.
 
 ### Screenshot 1: Game Start & Rule Explanation
 
-![Game Start](screenshots/game_start.png)
+![Snapshot 1](pic_1.png)
 
 ### Screenshot 2: Final Result Screen
 
-![Final Result](screenshots/final_result.png)
-
-> **How to add screenshots**
->
-> 1. Create a folder named `screenshots` in the project root
-> 2. Add images named:
->
->    * `game_start.png`
->    * `final_result.png`
-> 3. GitHub will automatically render them in this README
-
----
+![Snapshot 2](pic_2.png)
 
 ## Final Notes
 
