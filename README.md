@@ -1,80 +1,28 @@
-# 🎮 Rock-Paper-Scissors-Plus (RPS+)
+# RPS+ AI Referee: Technical Overview
 
-A modern twist on the classic game, featuring an AI Referee and an explosive "Bomb" mechanic. Play against a bot in a best-of-3 showdown.
+## 1. State Model
+The game state is encapsulated in a dedicated `GameState` class to ensure consistency and isolate logic from the interface.
+*   **Core Attributes**: 
+    *   `round_count` (int): Tracks progress (max 3 rounds).
+    *   `user_score`, `bot_score` (int): Tracks the score.
+    *   `user_bomb_used`, `bot_bomb_used` (bool): A strict flag ensures the "Bomb" power-up is one-time use only.
+    *   `game_over` (bool): Terminal state flag.
+*   **State Transitions**: State is mutated exclusively through deterministic functions (`play_round`), ensuring that the Agent cannot hallucinate the score or rules.
 
-## ✨ Features
-- **Classic Rules**: Rock beats Scissors, Scissors beats Paper, Paper beats Rock.
-- **The Bomb**: A special move that beats everything but can only be used **once** per game.
-- **Two Ways to Play**:
-    - **CLI Mode**: An Agentic AI Referee powered by **Google Gemini** orchestrates the game.
-    - **Web Mode**: A fast, interactive UI built with **Streamlit**.
+## 2. Agent & Tool Design
+The system uses a **Pattern-Separated Architecture**:
+*   **The Agent (Persona & interface)**: The LLM (Gemini) acts as the "Referee". Its role is purely conversational—welcoming the user, explaining invalid inputs, and announcing results with personality.
+*   **The Tool (Deterministic Logic)**: The `play_turn` function is the source of truth.
+    *   **Agent Responsibility**: Identify the user's move intent ("I throw rock", "rock", "use bomb").
+    *   **Tool Responsibility**: Validate the move (e.g., check if bomb was already used), calculate the winner, and return the structured result.
+    *   **Data Flow**: User Input -> LLM -> `play_turn` Tool -> LLM -> Final Response.
 
-## 🏗️ Architecture
+## 3. Tradeoffs
+*   **Deterministic vs. Generative Rules**: I chose to hardcode game rules (Rock beats Scissors) in Python rather than letting the LLM decide. **Tradeoff**: Less "creative" flexibility for house rules, but guarantees 100% fairness and prevents hallucinations.
+*   **In-Memory State**: State is held in a Python object instance. **Tradeoff**: Very fast and simple to implement, but state is lost if the script crashes or restarts. It does not persist across different sessions.
+*   **Synchronous Tool Execution**: The Agent waits for the tool to complete. **Tradeoff**: Simplifies the control flow logic but could block the UI if the logic was computationally heavy (not an issue for RPS).
 
-The project supports two distinct architectural patterns for the game logic.
-
-```mermaid
-graph TD
-    subgraph CLI_Mode [Terminal Verification]
-        U1[User] -->|Input| S[rps_referee.py]
-        S -->|Game Context| G[Google Gemini API]
-        G -->|Tool Call / Response| S
-        S -->|Result| U1
-    end
-
-    subgraph Web_Mode [Streamlit Application]
-        U2[User] -->|Click| UI[Streamlit UI]
-        UI -->|Event| L[Local Python Logic]
-        L -->|Update State| UI
-        UI -->|Render| U2
-    end
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Python 3.8+
-- A [Google Gemini API Key](https://aistudio.google.com/app/apikey) (for CLI mode)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Luqmaan29/Game_Simulator_Upliance.git
-   cd Game_Simulator_Upliance
-   ```
-
-2. **Set up Environment**
-   Create a `.env` file in the root directory:
-   ```bash
-   GOOGLE_API_KEY=your_api_key_here
-   ```
-
-3. **Install Dependencies**
-   ```bash
-   pip install google-genai python-dotenv streamlit
-   ```
-
-## 🕹️ How to Play
-
-### Option 1: AI Referee (CLI)
-Experience the game with an AI personality managing the rules.
-```bash
-python3 rps_referee.py
-```
-
-### Option 2: Web Interface (Streamlit)
-Play with a graphical interface.
-```bash
-streamlit run app.py
-```
-
-## 📜 Rules
-1. **Best of 3 Rounds**.
-2. **Bomb Mechanic**: 
-   - Beats Rock, Paper, and Scissors.
-   - Using it twice wastes your turn (automatic loss for that round).
-   - If both players use Bomb, it's a Draw.
-
----
-*Built for the Upliance Game Simulator Project.*
+## 4. Future Improvements
+*   **State Persistence**: Implement a lightweight database (SQLite) or Redis to allow users to pause and resume games later, or track lifetime stats.
+*   **Dynamic Difficulty**: Instead of a random bot backend, implement a Markov Chain or simple ML model to predict player moves and increase difficulty.
+*   **Unified Logic**: Currently, the Streamlit app and CLI script rely on similar but separate class definitions. I would refactor this into a shared `game_engine.py` module to follow DRY (Don't Repeat Yourself) principles.
