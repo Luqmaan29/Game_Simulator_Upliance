@@ -1,4 +1,4 @@
-# Rock_Paper_Scissors Game AI Referee  
+# Rock Paper Scissors Game - AI Referee  
 *A Rock–Paper–Scissors Game using Google ADK*
 
 ---
@@ -141,7 +141,3 @@ User Input → LLM (Intent Understanding)
 
 ![Snapshot 2](pic_2.png)
 
-## Final Notes
-
-This project emphasizes **clarity, correctness, and disciplined use of AI tools**.
-It demonstrates strong state modeling, proper ADK usage, and a clean separation between AI reasoning and deterministic game logic.
