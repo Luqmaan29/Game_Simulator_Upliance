@@ -25,4 +25,4 @@ The system uses a **Pattern-Separated Architecture**:
 ## 4. Future Improvements
 *   **State Persistence**: Implement a lightweight database (SQLite) or Redis to allow users to pause and resume games later, or track lifetime stats.
 *   **Dynamic Difficulty**: Instead of a random bot backend, implement a Markov Chain or simple ML model to predict player moves and increase difficulty.
-*   **Unified Logic**: Currently, the Streamlit app and CLI script rely on similar but separate class definitions. I would refactor this into a shared `game_engine.py` module to follow DRY (Don't Repeat Yourself) principles.
+
