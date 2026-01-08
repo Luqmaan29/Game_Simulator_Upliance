@@ -1,18 +1,18 @@
-# 🎮 RPS+ AI Referee  
-*A Minimal Rock–Paper–Scissors–Plus Game using Google ADK*
+# Rock_Paper_Scissors Game AI Referee  
+*A Rock–Paper–Scissors Game using Google ADK*
 
 ---
 
 ## Overview
 
-This project implements a **minimal AI Game Referee chatbot** for the game **Rock–Paper–Scissors–Plus (RPS+)**.  
+This project implements a **AI Game Referee chatbot** for the game **Rock–Paper–Scissors–Plus**.  
 A Gemini-based agent acts as the **referee**, while all game rules and state updates are handled by **deterministic Python logic** using Google ADK tools.
 
 The project focuses on **correctness, clean state modeling, and clear separation between AI reasoning and game logic**.
 
 ---
 
-## Game Rules (Quick Summary)
+## Game Rules
 
 - The game is **best of 3 rounds**
 - Valid moves:
@@ -122,51 +122,6 @@ User Input → LLM (Intent Understanding)
   This simplifies control flow and is suitable for a lightweight game.
 
 ---
-
-## Requirement Coverage Checklist
-
-✔ Best-of-3 rounds enforced
-✔ Valid moves: rock, paper, scissors, bomb
-✔ Bomb usable only once per player
-✔ Bomb beats all other moves
-✔ Bomb vs Bomb results in a draw
-✔ Invalid input wastes the round
-✔ Game ends automatically after 3 rounds
-✔ State persists across turns
-✔ State is not stored in prompts
-✔ Explicit ADK tool used for state mutation
-
----
-
-## How to Run the Project
-
-### Prerequisites
-
-* Python 3.9+
-* Google Gemini API key
-
-### Install Dependencies
-
-```bash
-pip install google-genai python-dotenv
-```
-
-### Set Environment Variable
-
-```bash
-export GOOGLE_API_KEY=your_api_key_here
-```
-
-### Run
-
-```bash
-python main.py
-```
-
-The game runs in a **simple conversational CLI loop**, as required.
-
----
-
 ## Future Improvements
 
 * Persist game state using SQLite or Redis
@@ -178,11 +133,11 @@ The game runs in a **simple conversational CLI loop**, as required.
 
 ## Screenshots
 
-### Screenshot 1: Game Start & Rule Explanation
+
 
 ![Snapshot 1](pic_1.png)
 
-### Screenshot 2: Final Result Screen
+
 
 ![Snapshot 2](pic_2.png)
 
